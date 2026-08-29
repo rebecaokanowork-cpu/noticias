@@ -22,17 +22,17 @@ const ticker = [...noticias]
     <!-- Top bar -->
     <div class="flex items-center justify-between h-14 border-b border-blue-900">
       <a href="/" class="flex items-center gap-2 shrink-0">
-        <svg class="w-6 h-6 text-amber-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 text-red-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4.5l5 2.22V11c0 3.52-2.33 6.79-5 7.93-2.67-1.14-5-4.41-5-7.93V7.72L12 5.5z"/>
         </svg>
         <span class="font-extrabold text-lg tracking-tight leading-none">
-          Notícia<span class="text-amber-400">Jurídica</span>
+          Notícia<span class="text-red-400">Jurídica</span>
         </span>
       </a>
 
       <div class="hidden md:flex items-center gap-3 text-xs text-blue-300">
         <span id="clock"></span>
-        <a href="/anuncie" class="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+        <a href="/anuncie" class="text-red-400 hover:text-red-300 font-semibold transition-colors">
           Anuncie aqui
         </a>
       </div>
@@ -43,28 +43,28 @@ const ticker = [...noticias]
       <a
         href="/"
         class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors',
-          current === '/' ? 'bg-amber-400 text-blue-950' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
+          current === '/' ? 'bg-red-700 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
       >Início</a>
       {categorias.map(cat => (
         <a
           href={`/categoria/${cat.slug}`}
           class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors',
-            current.includes(cat.slug) ? 'bg-amber-400 text-blue-950' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
+            current.includes(cat.slug) ? 'bg-red-700 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
         >{cat.nome}</a>
       ))}
       <a
         href="/anuncie"
         class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors ml-auto',
-          current.includes('anuncie') ? 'bg-amber-400 text-blue-950' : 'text-blue-300 hover:text-amber-400']}
+          current.includes('anuncie') ? 'bg-red-700 text-white' : 'text-blue-300 hover:text-red-400']}
       >📢 Anuncie</a>
     </nav>
   </div>
 
   <!-- Ticker de últimas notícias -->
   {ticker.length > 0 && (
-    <div class="bg-amber-400 text-blue-950 text-xs font-semibold overflow-hidden">
+    <div class="bg-red-700 text-white text-xs font-semibold overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 flex items-center gap-3 h-7">
-        <span class="shrink-0 bg-blue-950 text-amber-400 px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider">
+        <span class="shrink-0 bg-white text-red-700 px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider">
           Últimas
         </span>
         <div class="ticker-wrap overflow-hidden flex-1">
