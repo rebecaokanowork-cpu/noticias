@@ -1,0 +1,109 @@
+---
+import noticias from '../data/noticias.json';
+
+const categorias = [
+  { nome: 'Constitucional', slug: 'constitucional' },
+  { nome: 'Trabalhista',    slug: 'trabalhista' },
+  { nome: 'Tributário',     slug: 'tributario' },
+  { nome: 'Civil',          slug: 'civil' },
+  { nome: 'Penal',          slug: 'penal' },
+  { nome: 'Previdenciário', slug: 'previdenciario' },
+];
+
+const current = Astro.url.pathname;
+
+// Últimas 8 notícias para o ticker
+const ticker = [...noticias]
+  .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime())
+  .slice(0, 8);
+---
+<header class="bg-blue-950 text-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Top bar -->
+    <div class="flex items-center justify-between h-14 border-b border-blue-900">
+      <a href="/" class="flex items-center gap-2 shrink-0">
+        <svg class="w-6 h-6 text-amber-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4.5l5 2.22V11c0 3.52-2.33 6.79-5 7.93-2.67-1.14-5-4.41-5-7.93V7.72L12 5.5z"/>
+        </svg>
+        <span class="font-extrabold text-lg tracking-tight leading-none">
+          Notícia<span class="text-amber-400">Jurídica</span>
+        </span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-3 text-xs text-blue-300">
+        <span id="clock"></span>
+        <a href="/anuncie" class="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+          Anuncie aqui
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav categorias -->
+    <nav class="flex gap-0.5 py-2 overflow-x-auto">
+      <a
+        href="/"
+        class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors',
+          current === '/' ? 'bg-amber-400 text-blue-950' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
+      >Início</a>
+      {categorias.map(cat => (
+        <a
+          href={`/categoria/${cat.slug}`}
+          class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors',
+            current.includes(cat.slug) ? 'bg-amber-400 text-blue-950' : 'text-blue-200 hover:text-white hover:bg-blue-800']}
+        >{cat.nome}</a>
+      ))}
+      <a
+        href="/anuncie"
+        class:list={['text-xs px-3 py-1.5 rounded whitespace-nowrap font-semibold transition-colors ml-auto',
+          current.includes('anuncie') ? 'bg-amber-400 text-blue-950' : 'text-blue-300 hover:text-amber-400']}
+      >📢 Anuncie</a>
+    </nav>
+  </div>
+
+  <!-- Ticker de últimas notícias -->
+  {ticker.length > 0 && (
+    <div class="bg-amber-400 text-blue-950 text-xs font-semibold overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 flex items-center gap-3 h-7">
+        <span class="shrink-0 bg-blue-950 text-amber-400 px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider">
+          Últimas
+        </span>
+        <div class="ticker-wrap overflow-hidden flex-1">
+          <div class="ticker-content flex gap-8 animate-ticker whitespace-nowrap">
+            {[...ticker, ...ticker].map((n, i) => (
+              <a key={i} href={`/noticias/${n.id}`} class="hover:underline shrink-0">
+                {n.titulo}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</header>
+
+<script>
+  function tick() {
+    const el = document.getElementById('clock');
+    if (el) {
+      el.textContent = new Date().toLocaleString('pt-BR', {
+        weekday: 'short', day: '2-digit', month: 'short',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+  }
+  tick();
+  setInterval(tick, 60000);
+</script>
+
+<style>
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-ticker {
+    animation: ticker 40s linear infinite;
+  }
+  .animate-ticker:hover {
+    animation-play-state: paused;
+  }
+</style>

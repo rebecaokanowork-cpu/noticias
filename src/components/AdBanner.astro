@@ -1,0 +1,28 @@
+---
+interface Props {
+  slot?: string;
+  formato?: 'horizontal' | 'retangulo' | 'vertical';
+}
+const { slot: adSlot = 'XXXXXXXXXX', formato = 'horizontal' } = Astro.props;
+
+const alturas: Record<string, string> = {
+  horizontal: 'h-24',
+  retangulo:  'h-64',
+  vertical:   'h-96',
+};
+---
+<!-- AdSense — substitua ca-pub e o data-ad-slot pelos seus -->
+<div class:list={['w-full bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs', alturas[formato]]}>
+  <!-- PRODUÇÃO: descomente o bloco abaixo e remova este div -->
+  <!--
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+    data-ad-slot={adSlot}
+    data-ad-format={formato === 'horizontal' ? 'auto' : 'rectangle'}
+    data-full-width-responsive="true">
+  </ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+  <span>Anúncio</span>
+</div>

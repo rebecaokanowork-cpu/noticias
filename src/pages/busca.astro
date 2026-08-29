@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import noticias from '../data/noticias.json';
+
+// Pré-serializa para o cliente
+const noticiasSerialized = JSON.stringify(noticias.map(n => ({
+  id: n.id,
+  titulo: n.titulo,
+  resumo: n.resumo,
+  categoria: n.categoria,
+  fonte: n.fonte,
+  data: n.data,
+})));
+---
+<Layout
+  title="Busca — Notícia Jurídica"
+  description="Busque notícias jurídicas por palavra-chave, categoria ou tribunal. Acervo atualizado diariamente."
+  breadcrumbs={[{ nome: 'Busca', url: '/busca' }]}
+>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-2xl font-extrabold text-blue-950 mb-6">Buscar notícias</h1>
+
+    <!-- Campo de busca -->
+    <div class="relative mb-8">
+      <input
+        id="busca-input"
+        type="search"
+        placeholder="Busque por palavra-chave, tribunal, tema..."
+        class="w-full border-2 border-blue-200 rounded-xl px-5 py-3 pr-12 text-base focus:outline-none focus:border-blue-600 bg-white shadow-sm"
+        autofocus
+      />
+      <svg class="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+    </div>
+
+    <!-- Resultado -->
+    <div id="busca-resultado" class="space-y-3">
+      <p class="text-gray-500 text-sm text-center py-8">Digite algo para buscar entre <strong>{noticias.length}</strong> notícias.</p>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ noticiasSerialized }}>
+  const todas = JSON.parse(noticiasSerialized);
+  const input  = document.getElementById('busca-input');
+  const result = document.getElementById('busca-resultado');
+
+  const coresCategoria = {
+    Constitucional: 'bg-purple-100 text-purple-800',
+    Trabalhista:    'bg-orange-100 text-orange-800',
+    'Tributário':   'bg-green-100 text-green-800',
+    Civil:          'bg-blue-100 text-blue-800',
+    Penal:          'bg-red-100 text-red-800',
+    'Previdenciário': 'bg-teal-100 text-teal-800',
+    Geral:          'bg-gray-100 text-gray-700',
+  };
+
+  function tempo(iso) {
+    const diff = Date.now() - new Date(iso).getTime();
+    const h = Math.floor(diff / 3.6e6);
+    const d = Math.floor(h / 24);
+    if (h < 1) return 'agora';
+    if (h < 24) return `há ${h}h`;
+    if (d === 1) return 'ontem';
+    return `há ${d} dias`;
+  }
+
+  function renderCard(n) {
+    const cor = coresCategoria[n.categoria] ?? coresCategoria['Geral'];
+    return `
+      <a href="/noticias/${n.id}" class="flex flex-col gap-1 bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2">
+          <span class="category-badge ${cor}">${n.categoria}</span>
+          <span class="text-xs text-gray-400">${n.fonte} · ${tempo(n.data)}</span>
+        </div>
+        <p class="font-bold text-gray-900 leading-snug">${n.titulo}</p>
+        <p class="text-sm text-gray-500 line-clamp-2">${n.resumo}</p>
+      </a>`;
+  }
+
+  function buscar(q) {
+    if (!q || q.length < 2) {
+      result.innerHTML = `<p class="text-gray-500 text-sm text-center py-8">Digite algo para buscar entre <strong>${todas.length}</strong> notícias.</p>`;
+      return;
+    }
+    const ql = q.toLowerCase();
+    const filtradas = todas.filter(n =>
+      n.titulo.toLowerCase().includes(ql) ||
+      n.resumo.toLowerCase().includes(ql) ||
+      n.categoria.toLowerCase().includes(ql) ||
+      n.fonte.toLowerCase().includes(ql)
+    ).slice(0, 30);
+
+    if (filtradas.length === 0) {
+      result.innerHTML = `<p class="text-gray-500 text-sm text-center py-8">Nenhuma notícia encontrada para "<strong>${q}</strong>".</p>`;
+      return;
+    }
+    result.innerHTML = `
+      <p class="text-xs text-gray-400 mb-2">${filtradas.length} resultado${filtradas.length > 1 ? 's' : ''} para "${q}"</p>
+      ${filtradas.map(renderCard).join('')}`;
+  }
+
+  // Lê ?q= da URL ao abrir
+  const params = new URLSearchParams(window.location.search);
+  const q0 = params.get('q') || '';
+  if (q0) { input.value = q0; buscar(q0); }
+
+  // Debounce na digitação
+  let timer;
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const q = input.value.trim();
+      const url = new URL(window.location.href);
+      q ? url.searchParams.set('q', q) : url.searchParams.delete('q');
+      history.replaceState(null, '', url);
+      buscar(q);
+    }, 300);
+  });
+</script>

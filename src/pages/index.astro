@@ -1,0 +1,179 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsCard from '../components/NewsCard.astro';
+import AdBanner from '../components/AdBanner.astro';
+import noticias from '../data/noticias.json';
+
+const todas = [...noticias].sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+
+// Bloco de manchetes: top 6
+const manchetes  = todas.slice(0, 6);
+// Grade principal: próximas 9
+const grade      = todas.slice(6, 15);
+// Mais notícias: restante até 40
+const mais       = todas.slice(15, 40);
+
+const categorias = ['Constitucional', 'Trabalhista', 'Tributário', 'Civil', 'Penal', 'Previdenciário'];
+function noticias_cat(cat: string) {
+  return todas.filter(n => n.categoria === cat).slice(0, 3);
+}
+
+const coresCategoria: Record<string, string> = {
+  Constitucional: 'bg-purple-100 text-purple-800',
+  Trabalhista:    'bg-orange-100 text-orange-800',
+  Tributário:     'bg-green-100 text-green-800',
+  Civil:          'bg-blue-100 text-blue-800',
+  Penal:          'bg-red-100 text-red-800',
+  Previdenciário: 'bg-teal-100 text-teal-800',
+  Geral:          'bg-gray-100 text-gray-700',
+};
+
+function tempo(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const h = Math.floor(diff / 3.6e6);
+  const d = Math.floor(h / 24);
+  if (h < 1) return 'agora';
+  if (h < 24) return `há ${h}h`;
+  if (d === 1) return 'ontem';
+  return `há ${d} dias`;
+}
+
+const ultimaAtualizacao = todas[0]?.data
+  ? new Date(todas[0].data).toLocaleString('pt-BR', { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' })
+  : 'Em breve';
+
+const vazio = todas.length === 0;
+---
+<Layout
+  title="Notícia Jurídica"
+  description={`Notícias jurídicas do Brasil atualizadas: STJ, STF, TST, legislação e jurisprudência. ${todas.length} notícias publicadas, atualizado diariamente em noticiajuridicas.com.br.`}
+>
+
+  {vazio && (
+    <div class="text-center py-24 text-gray-400">
+      <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+      </svg>
+      <p class="text-lg font-semibold">Aguardando primeiro scraping...</p>
+      <p class="text-sm mt-1">Rode <code class="bg-gray-100 px-1 rounded">python scraper/scraper.py</code></p>
+    </div>
+  )}
+
+  {!vazio && (
+    <div class="space-y-10">
+
+      <!-- ── Cabeçalho da home ── -->
+      <div class="flex items-center justify-between border-b-2 border-blue-950 pb-2">
+        <h1 class="text-2xl font-extrabold text-blue-950" style="font-family:'Playfair Display',serif">
+          Últimas Notícias
+        </h1>
+        <span class="text-xs text-gray-400 font-medium">Atualizado: {ultimaAtualizacao}</span>
+      </div>
+
+      <!-- ── Bloco principal: manchetes + destaque ── -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Manchetes (col 1-2) -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-5">
+          <h2 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">Destaques do dia</h2>
+          <ul>
+            {manchetes.map((n, i) => {
+              const cor = coresCategoria[n.categoria] ?? coresCategoria['Geral'];
+              return (
+                <li class="manchete">
+                  <span class="text-2xl font-black text-gray-200 leading-none w-7 shrink-0 select-none">
+                    {i + 1}
+                  </span>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class:list={['category-badge', cor]}>{n.categoria}</span>
+                      <span class="text-xs text-gray-400">{tempo(n.data)}</span>
+                    </div>
+                    <a href={`/noticias/${n.id}`} class="group">
+                      <p class="font-bold text-gray-900 group-hover:text-blue-800 transition-colors leading-snug text-sm sm:text-base">
+                        {n.titulo}
+                      </p>
+                    </a>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <!-- Sidebar: Ad + categorias rápidas -->
+        <aside class="space-y-4">
+          <AdBanner formato="retangulo" slot="1111111111" />
+          <div class="bg-white rounded-xl shadow-sm p-4">
+            <h3 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Navegar por área</h3>
+            <div class="grid grid-cols-2 gap-2">
+              {categorias.map(cat => {
+                const slug = cat.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+                const cor = coresCategoria[cat];
+                return (
+                  <a href={`/categoria/${slug}`}
+                     class:list={['text-xs font-semibold px-2 py-2 rounded text-center transition-opacity hover:opacity-80', cor]}>
+                    {cat}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- ── Ad horizontal ── -->
+      <AdBanner formato="horizontal" slot="2222222222" />
+
+      <!-- ── Grade de cards ── -->
+      {grade.length > 0 && (
+        <section>
+          <div class="flex items-center gap-2 mb-4 border-b border-gray-200 pb-2">
+            <span class="w-1 h-5 bg-amber-400 rounded-full"></span>
+            <h2 class="font-bold text-gray-900" style="font-family:'Playfair Display',serif">Mais recentes</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {grade.map(n => <NewsCard noticia={n} />)}
+          </div>
+        </section>
+      )}
+
+      <!-- ── Por categoria ── -->
+      {categorias.map(cat => {
+        const itens = noticias_cat(cat);
+        const catSlug = cat.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        return itens.length > 0 && (
+          <section>
+            <div class="flex items-center justify-between mb-4 border-b border-gray-200 pb-2">
+              <h2 class="font-bold text-gray-900 flex items-center gap-2" style="font-family:'Playfair Display',serif">
+                <span class="w-1 h-5 bg-blue-700 rounded-full"></span>
+                {cat}
+              </h2>
+              <a href={`/categoria/${catSlug}`} class="text-xs text-blue-700 font-semibold hover:underline">
+                Ver tudo →
+              </a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {itens.map(n => <NewsCard noticia={n} />)}
+            </div>
+          </section>
+        );
+      })}
+
+      <!-- ── Ad + mais notícias ── -->
+      <AdBanner formato="horizontal" slot="3333333333" />
+
+      {mais.length > 0 && (
+        <section>
+          <div class="flex items-center gap-2 mb-4 border-b border-gray-200 pb-2">
+            <span class="w-1 h-5 bg-gray-400 rounded-full"></span>
+            <h2 class="font-bold text-gray-900" style="font-family:'Playfair Display',serif">Mais notícias</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {mais.map(n => <NewsCard noticia={n} />)}
+          </div>
+        </section>
+      )}
+
+    </div>
+  )}
+</Layout>

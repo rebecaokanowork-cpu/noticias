@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Disallow: /busca?
+
+# Sitemaps
+Sitemap: https://noticiajuridicas.com.br/sitemap-index.xml
+
+# LLMs e IAs
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /

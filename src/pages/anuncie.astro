@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Anuncie no Notícia Jurídica — Fale com Advogados e Operadores do Direito"
+  description="Anuncie no maior portal de notícias jurídicas do Brasil. Alcance advogados, juízes, promotores e estudantes de direito. Formatos de banner, native e sponsored post."
+  breadcrumbs={[{ nome: 'Anuncie', url: '/anuncie' }]}
+>
+  <!-- Hero -->
+  <div class="text-center py-12 bg-gradient-to-br from-blue-950 to-blue-900 rounded-2xl text-white mb-12 px-6">
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-4">
+      Fale com quem decide.<br/>
+      <span class="text-amber-400">Anuncie no Notícia Jurídica.</span>
+    </h1>
+    <p class="text-blue-200 text-lg max-w-2xl mx-auto mb-6">
+      Nosso leitor é advogado, juiz, promotor, estudante de direito ou gestor jurídico.
+      Perfil de alta renda, alta instrução e alto poder de decisão de compra.
+    </p>
+    <a
+      href="https://wa.me/5518997985211?text=Olá!%20Quero%20anunciar%20no%20Notícia%20Jurídica"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-block bg-amber-400 text-blue-950 font-black px-8 py-3 rounded-lg text-lg hover:bg-amber-300 transition-colors"
+    >
+      Solicitar proposta pelo WhatsApp →
+    </a>
+  </div>
+
+  <!-- Números -->
+  <section class="mb-12">
+    <h2 class="text-xl font-bold text-blue-950 mb-6 text-center">Nossos números</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {[
+        { num: '10.000+', label: 'Visitas/mês', icon: '👥' },
+        { num: '35+',     label: 'Notícias novas por dia', icon: '📰' },
+        { num: '4h',      label: 'Frequência de atualização', icon: '⏱️' },
+        { num: '6',       label: 'Áreas do direito cobertas', icon: '⚖️' },
+      ].map(({ num, label, icon }) => (
+        <div class="bg-white rounded-xl shadow-sm p-5 text-center">
+          <div class="text-3xl mb-2">{icon}</div>
+          <div class="text-2xl font-extrabold text-blue-950">{num}</div>
+          <div class="text-sm text-gray-500">{label}</div>
+        </div>
+      ))}
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-3">* Números em crescimento. Site novo, crescimento acelerado.</p>
+  </section>
+
+  <!-- Perfil do leitor -->
+  <section class="mb-12 bg-blue-50 rounded-xl p-8">
+    <h2 class="text-xl font-bold text-blue-950 mb-6">Perfil do leitor</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Advogados e estagiários de direito</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Juízes, promotores e delegados</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Estudantes de direito (OAB e pós-graduação)</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Gestores e departamentos jurídicos de empresas</li>
+      </ul>
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Renda média acima de R$ 5.000</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Alto poder de decisão de compra</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Busca ativa por serviços e ferramentas jurídicas</li>
+        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Acesso majoritariamente via mobile e desktop</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Formatos de anúncio -->
+  <section class="mb-12">
+    <h2 class="text-xl font-bold text-blue-950 mb-6">Formatos disponíveis</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {[
+        {
+          nome: 'Banner Header',
+          desc: 'Aparece logo abaixo do ticker de notícias. Alta visibilidade, todas as páginas.',
+          dim: '728×90 ou responsivo',
+          ideal: 'Cursos OAB, legaltech, editoras',
+          preco: 'A partir de R$ 600/mês',
+          destaque: false,
+        },
+        {
+          nome: 'Sponsored Post',
+          desc: 'Artigo patrocinado integrado ao feed de notícias. Parece editorial, tem 3× mais cliques.',
+          dim: 'Texto + imagem (redigimos para você)',
+          ideal: 'Escritórios, serviços B2B',
+          preco: 'A partir de R$ 350/post',
+          destaque: true,
+        },
+        {
+          nome: 'Sidebar Sticky',
+          desc: 'Banner lateral que acompanha o usuário enquanto lê o artigo.',
+          dim: '300×250 ou 300×600',
+          ideal: 'Seguradoras, bancos, consultorias',
+          preco: 'A partir de R$ 400/mês',
+          destaque: false,
+        },
+      ].map(f => (
+        <div class:list={['rounded-xl p-6 border-2', f.destaque ? 'border-amber-400 bg-amber-50' : 'border-gray-200 bg-white shadow-sm']}>
+          {f.destaque && <span class="text-xs bg-amber-400 text-blue-950 font-black px-2 py-0.5 rounded uppercase tracking-wide mb-3 inline-block">Mais popular</span>}
+          <h3 class="font-bold text-blue-950 text-lg mb-2">{f.nome}</h3>
+          <p class="text-sm text-gray-600 mb-3">{f.desc}</p>
+          <dl class="text-sm space-y-1 mb-4">
+            <div><dt class="text-gray-400 inline">Dimensões: </dt><dd class="inline text-gray-700">{f.dim}</dd></div>
+            <div><dt class="text-gray-400 inline">Ideal para: </dt><dd class="inline text-gray-700">{f.ideal}</dd></div>
+          </dl>
+          <div class="text-blue-950 font-extrabold text-lg">{f.preco}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Quem deve anunciar -->
+  <section class="mb-12 bg-white rounded-xl shadow-sm p-8">
+    <h2 class="text-xl font-bold text-blue-950 mb-4">Ideal para anunciar aqui</h2>
+    <div class="flex flex-wrap gap-3">
+      {[
+        'Cursos preparatórios OAB',
+        'Pós-graduação em Direito',
+        'Software de gestão jurídica',
+        'Escritórios de advocacia',
+        'Editoras jurídicas',
+        'Seguros profissionais',
+        'Plataformas de petições com IA',
+        'Consultorias tributárias',
+        'Bancos e fintechs',
+        'Eventos jurídicos',
+      ].map(item => (
+        <span class="bg-blue-100 text-blue-900 text-sm px-3 py-1.5 rounded-full font-medium">{item}</span>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <div class="text-center bg-blue-950 text-white rounded-2xl p-10">
+    <h2 class="text-2xl font-extrabold mb-3">Pronto para alcançar operadores do direito?</h2>
+    <p class="text-blue-200 mb-6">Entre em contato e receba um kit de mídia com todos os formatos, preços e métricas.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a
+        href="https://wa.me/5518997985211?text=Quero%20anunciar%20no%20Notícia%20Jurídica"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-green-500 hover:bg-green-400 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+      >
+        💬 WhatsApp
+      </a>
+      <a
+        href="mailto:contato@noticiajuridicas.com.br"
+        class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-bold px-6 py-3 rounded-lg transition-colors"
+      >
+        ✉️ E-mail
+      </a>
+    </div>
+    <p class="text-xs text-blue-400 mt-4">Respondemos em até 24 horas.</p>
+  </div>
+</Layout>

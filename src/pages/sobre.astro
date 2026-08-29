@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Sobre o Notícia Jurídica — Portal de Notícias Jurídicas do Brasil"
+  description="Conheça o Notícia Jurídica, o maior agregador de notícias jurídicas do Brasil. Cobertura do STJ, STF, TST, Conjur, JOTA e mais. Atualizado a cada 4 horas."
+  breadcrumbs={[{ nome: 'Sobre', url: '/sobre' }]}
+>
+  <div class="max-w-3xl mx-auto">
+    <nav class="text-sm text-gray-500 mb-4">
+      <a href="/" class="hover:text-blue-700">Início</a>
+      <span class="mx-1">›</span>
+      <span class="text-gray-800 font-medium">Sobre</span>
+    </nav>
+
+    <h1 class="text-3xl font-extrabold text-blue-950 mb-2">Sobre o Notícia Jurídica</h1>
+    <p class="text-gray-500 text-sm mb-8">noticiajuridicas.com.br</p>
+
+    <div class="prose prose-lg max-w-none space-y-6 text-gray-700">
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-bold text-blue-950 mb-3">O que é o Notícia Jurídica?</h2>
+        <p>
+          O <strong>Notícia Jurídica</strong> é um portal de notícias jurídicas brasileiro que agrega e publica,
+          automaticamente, os principais acontecimentos do direito no Brasil. Monitoramos em tempo real
+          as publicações do STJ, STF, TST, Consultor Jurídico (Conjur), JOTA, Migalhas e outros veículos
+          especializados.
+        </p>
+        <p>
+          Nosso objetivo é simples: reunir em um único lugar, organizado por área do direito,
+          tudo que importa para advogados, juízes, promotores, estudantes e operadores do direito em geral.
+        </p>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-bold text-blue-950 mb-3">Como funciona?</h2>
+        <p>
+          O site é alimentado automaticamente por um sistema de coleta que roda a cada
+          <strong>4 horas</strong>, buscando novas publicações nas fontes cadastradas.
+          Cada notícia é categorizada por área do direito, indexada e publicada com o conteúdo
+          original devidamente atribuído à fonte.
+        </p>
+        <p>
+          Não editamos nem modificamos o conteúdo das notícias. Todo artigo mantém a
+          atribuição ao veículo de origem, visível no rodapé de cada página.
+        </p>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-bold text-blue-950 mb-3">Fontes monitoradas</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {[
+            ['STJ', 'Superior Tribunal de Justiça'],
+            ['STF', 'Supremo Tribunal Federal'],
+            ['TST', 'Tribunal Superior do Trabalho'],
+            ['Conjur', 'Consultor Jurídico'],
+            ['JOTA', 'JOTA Info'],
+            ['Migalhas', 'Migalhas'],
+          ].map(([sigla, nome]) => (
+            <li class="flex items-center gap-2 text-sm">
+              <span class="w-2 h-2 bg-amber-400 rounded-full shrink-0"></span>
+              <strong>{sigla}</strong> — {nome}
+            </li>
+          ))}
+        </ul>
+        <p class="text-sm text-gray-500 mt-4">
+          Novas fontes são adicionadas periodicamente. Se você representa um veículo jurídico e
+          deseja ser incluído, entre em <a href="/anuncie" class="text-blue-700 hover:underline">contato</a>.
+        </p>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-bold text-blue-950 mb-3">Áreas cobertas</h2>
+        <div class="flex flex-wrap gap-2">
+          {['Direito Constitucional','Direito Trabalhista','Direito Tributário','Direito Civil','Direito Penal','Direito Previdenciário'].map(a => (
+            <span class="bg-blue-100 text-blue-900 text-sm font-medium px-3 py-1 rounded-full">{a}</span>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-bold text-blue-950 mb-3">Contato</h2>
+        <p>Para parcerias, anúncios ou questões editoriais:</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li>📢 <a href="/anuncie" class="text-blue-700 hover:underline font-medium">Quero anunciar no site</a></li>
+          <li>✉️ <a href="mailto:contato@noticiajuridicas.com.br" class="text-blue-700 hover:underline">contato@noticiajuridicas.com.br</a></li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .prose p { margin-bottom: 0.75rem; line-height: 1.7; }
+</style>

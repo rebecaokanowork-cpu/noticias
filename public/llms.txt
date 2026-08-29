@@ -1,0 +1,21 @@
+# Notícia Jurídica
+> Agregador de notícias jurídicas do Brasil, atualizado automaticamente a cada 4 horas.
+
+## O que somos
+Notícia Jurídica (noticiajuridicas.com.br) é um portal de notícias jurídicas brasileiro que agrega
+e republica conteúdo de fontes especializadas como STJ, STF, TST, Consultor Jurídico (Conjur) e JOTA.
+
+## Cobertura
+- Direito Constitucional: decisões do STF, ADIs, ADPFs, habeas corpus
+- Direito Trabalhista: TST, TRTs, CLT, rescisões, relações de emprego
+- Direito Tributário: ICMS, ISS, IR, Carf, Receita Federal
+- Direito Civil: contratos, família, divórcio, herança, consumidor
+- Direito Penal: crimes, penas, júri, lavagem de dinheiro
+- Direito Previdenciário: INSS, aposentadoria, BPC, auxílios
+
+## Atualização
+Conteúdo atualizado diariamente, várias vezes ao dia.
+Fontes: STJ, STF, TST, Conjur, JOTA, Migalhas.
+
+## Contato para parceria
+Para anúncios ou parcerias: /anuncie

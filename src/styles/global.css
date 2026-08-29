@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #f8fafc;
+    color: #111827;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  .news-card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .news-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    transform: translateY(-1px);
+  }
+  .category-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary {
+    background-color: #1e3a8a;
+    color: #fff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary:hover {
+    background-color: #172554;
+  }
+  /* Manchete list item */
+  .manchete {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .manchete:last-child {
+    border-bottom: none;
+  }
+}

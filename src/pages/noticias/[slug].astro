@@ -1,0 +1,198 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdBanner from '../../components/AdBanner.astro';
+import noticias from '../../data/noticias.json';
+
+export function getStaticPaths() {
+  return noticias.map(n => ({ params: { slug: n.id } }));
+}
+
+const { slug } = Astro.params;
+const noticia = noticias.find(n => n.id === slug);
+
+if (!noticia) {
+  return Astro.redirect('/');
+}
+
+const coresCategoria: Record<string, string> = {
+  Constitucional: 'bg-purple-100 text-purple-800',
+  Trabalhista:    'bg-orange-100 text-orange-800',
+  Tributário:     'bg-green-100 text-green-800',
+  Civil:          'bg-blue-100 text-blue-800',
+  Penal:          'bg-red-100 text-red-800',
+  Previdenciário: 'bg-teal-100 text-teal-800',
+  Geral:          'bg-gray-100 text-gray-700',
+};
+const cor = coresCategoria[noticia.categoria] ?? coresCategoria['Geral'];
+const catSlug = noticia.categoria.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+const dataFormatada = new Date(noticia.data).toLocaleDateString('pt-BR', {
+  weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
+  hour: '2-digit', minute: '2-digit'
+});
+
+const temConteudo = noticia.conteudo && noticia.conteudo.length > 100;
+---
+<Layout
+  title={noticia.titulo}
+  description={noticia.resumo || `Leia a notícia completa: ${noticia.titulo}. Direito ${noticia.categoria} no Notícia Jurídica.`}
+  image={noticia.imagem ?? undefined}
+  type="article"
+  breadcrumbs={[
+    { nome: `Direito ${noticia.categoria}`, url: `/categoria/${catSlug}` },
+    { nome: noticia.titulo.substring(0, 50), url: `/noticias/${noticia.id}` },
+  ]}
+>
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-500 mb-4">
+    <a href="/" class="hover:text-blue-700">Início</a>
+    › <a href={`/categoria/${catSlug}`} class="hover:text-blue-700">{noticia.categoria}</a>
+    › <span class="text-gray-800 line-clamp-1">{noticia.titulo.substring(0, 50)}…</span>
+  </nav>
+
+  <div class="flex gap-8 items-start">
+    <!-- Conteúdo principal -->
+    <article class="flex-1 min-w-0">
+      <!-- Cabeçalho -->
+      <header class="mb-6">
+        <span class:list={['category-badge mb-3', cor]}>{noticia.categoria}</span>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mt-2 mb-3">
+          {noticia.titulo}
+        </h1>
+        <div class="flex items-center gap-3 text-sm text-gray-500 border-b pb-4">
+          <span class="font-medium text-gray-700">{noticia.fonte}</span>
+          <span>·</span>
+          <time datetime={noticia.data}>{dataFormatada}</time>
+        </div>
+      </header>
+
+      <!-- Imagem de destaque -->
+      {noticia.imagem && (
+        <figure class="mb-6 rounded-lg overflow-hidden">
+          <img
+            src={noticia.imagem}
+            alt={noticia.titulo}
+            class="w-full max-h-80 object-cover"
+            loading="eager"
+          />
+        </figure>
+      )}
+
+      <!-- Ad acima do artigo -->
+      <div class="mb-6">
+        <AdBanner formato="horizontal" slot="1111111111" />
+      </div>
+
+      <!-- Corpo do artigo -->
+      {temConteudo ? (
+        <div
+          class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-a:text-blue-700 prose-img:rounded-lg prose-img:mx-auto"
+          set:html={noticia.conteudo}
+        />
+      ) : (
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 text-center">
+          <p class="text-gray-700 text-lg leading-relaxed mb-4">{noticia.resumo}</p>
+          <p class="text-sm text-gray-500">O conteúdo completo está disponível na fonte original.</p>
+        </div>
+      )}
+
+      <!-- Ad abaixo do artigo -->
+      <div class="mt-8">
+        <AdBanner formato="horizontal" slot="2222222222" />
+      </div>
+
+      <!-- Atribuição à fonte -->
+      <footer class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div class="text-sm text-gray-600">
+            <span class="font-medium">Fonte original:</span>{' '}
+            <a
+              href={noticia.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-700 hover:underline font-medium"
+            >
+              {noticia.fonte} →
+            </a>
+          </div>
+          <!-- Compartilhar -->
+          <div class="flex items-center gap-2 text-sm">
+            <span class="text-gray-500">Compartilhar:</span>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(noticia.titulo + ' ' + Astro.url.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors"
+            >WhatsApp</a>
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(Astro.url.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors"
+            >LinkedIn</a>
+          </div>
+        </div>
+      </footer>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-72 flex-shrink-0 space-y-6 sticky top-24">
+      <AdBanner formato="retangulo" slot="3333333333" />
+
+      <!-- Mais notícias da mesma categoria -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="font-bold text-gray-900 mb-3 text-sm uppercase tracking-wide">
+          Mais em {noticia.categoria}
+        </h3>
+        <ul class="space-y-3">
+          {noticias
+            .filter(n => n.categoria === noticia.categoria && n.id !== noticia.id)
+            .slice(0, 5)
+            .map(n => (
+              <li>
+                <a href={`/noticias/${n.id}`} class="text-sm text-gray-700 hover:text-blue-700 leading-snug block">
+                  {n.titulo}
+                </a>
+                <span class="text-xs text-gray-400 mt-0.5 block">
+                  {new Date(n.data).toLocaleDateString('pt-BR')}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Schema.org NewsArticle para SEO -->
+  <script type="application/ld+json" set:text={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": noticia.titulo,
+    "description": noticia.resumo,
+    "image": noticia.imagem ?? undefined,
+    "datePublished": noticia.data,
+    "dateModified": noticia.data,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Direito em Pauta",
+      "url": "https://direitoempauta.com.br"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": noticia.fonte
+    },
+    "mainEntityOfPage": Astro.url.href,
+  })} />
+</Layout>
+
+<style>
+  .prose :global(p) { margin-bottom: 1em; line-height: 1.75; color: #374151; }
+  .prose :global(h2) { font-size: 1.25rem; font-weight: 700; margin: 1.5em 0 0.5em; }
+  .prose :global(h3) { font-size: 1.1rem; font-weight: 600; margin: 1.25em 0 0.4em; }
+  .prose :global(a)  { color: #1d4ed8; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.5em; margin-bottom: 1em; }
+  .prose :global(li) { margin-bottom: 0.3em; }
+  .prose :global(blockquote) { border-left: 3px solid #d1d5db; padding-left: 1em; color: #6b7280; font-style: italic; margin: 1em 0; }
+  .prose :global(img) { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1em auto; }
+</style>

@@ -1,0 +1,55 @@
+---
+const ano = new Date().getFullYear();
+---
+<footer class="bg-blue-950 text-blue-200 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-3">
+          <svg class="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4.5l5 2.22V11c0 3.52-2.33 6.79-5 7.93-2.67-1.14-5-4.41-5-7.93V7.72L12 5.5z"/>
+          </svg>
+          <span class="font-extrabold text-white text-lg">Notícia<span class="text-amber-400">Jurídica</span></span>
+        </div>
+        <p class="text-sm leading-relaxed mb-3">
+          Agregador de notícias jurídicas do Brasil, atualizado automaticamente a cada 4 horas.
+          Decisões do STJ, STF, TST, legislação, jurisprudência e análises.
+        </p>
+        <a href="/anuncie" class="inline-block text-xs bg-amber-400 text-blue-950 font-bold px-3 py-1.5 rounded hover:bg-amber-300 transition-colors">
+          📢 Anuncie neste site
+        </a>
+      </div>
+
+      <div>
+        <h3 class="text-white font-bold mb-3 text-sm uppercase tracking-wide">Categorias</h3>
+        <ul class="space-y-1.5 text-sm">
+          {['Constitucional','Trabalhista','Tributário','Civil','Penal','Previdenciário'].map(c => {
+            const s = c.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+            return <li><a href={`/categoria/${s}`} class="hover:text-white transition-colors">{c}</a></li>;
+          })}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-white font-bold mb-3 text-sm uppercase tracking-wide">Fontes</h3>
+        <ul class="text-sm space-y-1.5">
+          <li>STJ — Superior Tribunal de Justiça</li>
+          <li>STF — Supremo Tribunal Federal</li>
+          <li>TST — Tribunal Superior do Trabalho</li>
+          <li>Consultor Jurídico (Conjur)</li>
+          <li>JOTA</li>
+          <li>Migalhas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-blue-900 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-blue-400">
+      <span>© {ano} NotíciaJurídica — noticiajuridicas.com.br</span>
+      <span>As notícias são de responsabilidade de seus respectivos autores e veículos.</span>
+      <div class="flex gap-4">
+        <a href="/anuncie" class="hover:text-white">Anuncie</a>
+        <a href="/sobre" class="hover:text-white">Sobre</a>
+      </div>
+    </div>
+  </div>
+</footer>

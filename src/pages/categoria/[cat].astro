@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import AdBanner from '../../components/AdBanner.astro';
+import noticias from '../../data/noticias.json';
+
+export function getStaticPaths() {
+  const cats = ['constitucional', 'trabalhista', 'tributario', 'civil', 'penal', 'previdenciario'];
+  return cats.map(cat => ({ params: { cat } }));
+}
+
+const slugParaNome: Record<string, string> = {
+  constitucional: 'Constitucional',
+  trabalhista:    'Trabalhista',
+  tributario:     'Tributário',
+  civil:          'Civil',
+  penal:          'Penal',
+  previdenciario: 'Previdenciário',
+};
+
+const descricaoCategoria: Record<string, string> = {
+  constitucional: 'decisões do STF, ADIs, ADPFs, habeas corpus e controle de constitucionalidade',
+  trabalhista:    'decisões do TST, TRTs, CLT, rescisões, salários, FGTS e relações de trabalho',
+  tributario:     'ICMS, ISS, IR, Carf, Receita Federal, isenções fiscais e tributação',
+  civil:          'contratos, responsabilidade civil, família, divórcio, herança e direito do consumidor',
+  penal:          'crimes, penas, júri, habeas corpus, lavagem de dinheiro e direito penal',
+  previdenciario: 'INSS, aposentadoria, BPC, auxílios e benefícios previdenciários',
+};
+
+const faqCategoria: Record<string, Array<{q: string; a: string}>> = {
+  constitucional: [
+    { q: 'O que é uma ADI (Ação Direta de Inconstitucionalidade)?', a: 'ADI é uma ação proposta ao STF para declarar lei ou ato normativo federal ou estadual inconstitucional, retirando-o do ordenamento jurídico.' },
+    { q: 'Qual a diferença entre STF e STJ?', a: 'O STF é o guardião da Constituição Federal e julga matérias constitucionais. O STJ é responsável pela uniformização da interpretação da legislação federal infraconstitucional.' },
+    { q: 'O que é habeas corpus?', a: 'Habeas corpus é um remédio constitucional que protege o direito de locomoção. É impetrado quando alguém sofre ou está ameaçado de sofrer violência ou coação em sua liberdade.' },
+  ],
+  trabalhista: [
+    { q: 'O que é rescisão indireta?', a: 'Rescisão indireta é quando o empregado pede demissão por falta grave cometida pelo empregador, como atrasos salariais reiterados ou assédio moral, tendo direito a todas as verbas rescisórias como se fosse demitido sem justa causa.' },
+    { q: 'Quais são os direitos na demissão sem justa causa?', a: 'Na demissão sem justa causa o trabalhador tem direito a: aviso prévio, saldo de salário, férias proporcionais + 1/3, 13º proporcional, multa de 40% do FGTS e seguro-desemprego.' },
+    { q: 'O que é o TST?', a: 'O Tribunal Superior do Trabalho (TST) é o órgão máximo da Justiça do Trabalho no Brasil, responsável por uniformizar a jurisprudência trabalhista em âmbito nacional.' },
+  ],
+  tributario: [
+    { q: 'O que é o Carf?', a: 'O Conselho Administrativo de Recursos Fiscais (Carf) é o tribunal administrativo que julga recursos de contribuintes contra autuações fiscais da Receita Federal.' },
+    { q: 'Qual a diferença entre ICMS e ISS?', a: 'ICMS incide sobre circulação de mercadorias e serviços de transporte e comunicação, sendo estadual. ISS incide sobre a prestação de serviços em geral, sendo municipal.' },
+    { q: 'O que é isenção tributária?', a: 'Isenção tributária é a dispensa legal do pagamento de tributo, concedida por lei, que exclui o crédito tributário sem eliminar a obrigação tributária principal.' },
+  ],
+  civil: [
+    { q: 'O que é dano moral?', a: 'Dano moral é a lesão a direitos da personalidade como honra, imagem, dignidade e privacidade. Gera direito à indenização independentemente de prejuízo material comprovado.' },
+    { q: 'Como funciona a guarda compartilhada?', a: 'Na guarda compartilhada ambos os pais exercem a guarda de forma igualitária. A criança pode residir com um dos pais (guarda física), mas as decisões sobre educação, saúde e lazer são tomadas conjuntamente.' },
+    { q: 'O que é prescrição no direito civil?', a: 'Prescrição é a perda do direito de ação pelo decurso do prazo legal sem que o titular exercesse seu direito. Os prazos variam conforme o tipo de pretensão.' },
+  ],
+  penal: [
+    { q: 'Qual a diferença entre crime doloso e culposo?', a: 'Crime doloso é praticado com intenção (o agente quer ou aceita o resultado). Crime culposo ocorre por negligência, imprudência ou imperícia, sem intenção de causar o resultado.' },
+    { q: 'O que é habeas corpus no processo penal?', a: 'No processo penal, habeas corpus é utilizado para garantir a liberdade de locomoção quando há ilegalidade na prisão, excesso de prazo ou constrangimento ilegal à liberdade.' },
+    { q: 'O que significa réu primário?', a: 'Réu primário é aquele que não possui condenação anterior transitada em julgado. A primariedade é considerada circunstância atenuante na dosimetria da pena.' },
+  ],
+  previdenciario: [
+    { q: 'Quais são os requisitos para aposentadoria pelo INSS em 2024?', a: 'Para aposentadoria por tempo de contribuição: homens precisam de 65 anos e 20 anos de contribuição; mulheres, 62 anos e 15 anos. Para aposentadoria por invalidez, comprovação de incapacidade permanente.' },
+    { q: 'O que é o BPC (Benefício de Prestação Continuada)?', a: 'O BPC é um benefício assistencial de 1 salário mínimo pago pelo INSS a idosos com 65 anos ou mais e a pessoas com deficiência que comprovem renda familiar per capita inferior a 1/4 do salário mínimo.' },
+    { q: 'Como funciona o auxílio-doença?', a: 'O auxílio-doença (agora chamado auxílio por incapacidade temporária) é pago quando o segurado fica temporariamente incapaz de trabalhar por doença ou acidente, após 15 dias de afastamento.' },
+  ],
+};
+
+const { cat } = Astro.params;
+const nome = slugParaNome[cat] ?? cat;
+const desc = descricaoCategoria[cat] ?? '';
+const faqs = faqCategoria[cat] ?? [];
+
+const schemaFaq = faqs.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a },
+  })),
+} : null;
+
+const filtradas = noticias
+  .filter(n => n.categoria.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '') === cat)
+  .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+
+const hoje = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+const metaDesc = `${filtradas.length} notícias de Direito ${nome} atualizadas em ${hoje}: ${desc}. Atualizado diariamente no Notícia Jurídica.`;
+---
+<Layout
+  title={`Direito ${nome} — Notícias Atualizadas`}
+  description={metaDesc}
+  breadcrumbs={[{ nome: `Direito ${nome}`, url: `/categoria/${cat}` }]}
+>
+  <div class="mb-6 pb-4 border-b border-gray-200">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-blue-700">Início</a>
+      <span class="mx-1">›</span>
+      <span class="text-gray-800 font-medium">Direito {nome}</span>
+    </nav>
+    <h1 class="text-2xl font-extrabold text-blue-950">Direito {nome}</h1>
+    <p class="text-sm text-gray-500 mt-1">
+      {filtradas.length} {filtradas.length === 1 ? 'notícia' : 'notícias'} · Atualizado hoje
+    </p>
+  </div>
+
+  <AdBanner formato="horizontal" />
+
+  {filtradas.length === 0 ? (
+    <div class="text-center py-20 text-gray-400">
+      <p class="text-lg font-medium">Nenhuma notícia ainda nesta categoria.</p>
+      <p class="text-sm mt-1">Atualizamos a cada 4 horas — volte em breve.</p>
+      <a href="/" class="mt-4 inline-block btn-primary">← Início</a>
+    </div>
+  ) : (
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {filtradas.map(n => <NewsCard noticia={n} />)}
+    </div>
+  )}
+
+  {faqs.length > 0 && (
+    <section class="mt-12 bg-white rounded-xl shadow-sm p-6">
+      <h2 class="text-lg font-bold text-blue-950 mb-5">
+        Perguntas frequentes sobre Direito {nome}
+      </h2>
+      <dl class="space-y-4">
+        {faqs.map(f => (
+          <div class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+            <dt class="font-semibold text-gray-900 mb-1">{f.q}</dt>
+            <dd class="text-sm text-gray-600 leading-relaxed">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )}
+
+  {schemaFaq && (
+    <script type="application/ld+json" set:text={JSON.stringify(schemaFaq)} />
+  )}
+</Layout>
