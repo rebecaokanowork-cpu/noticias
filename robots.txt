@@ -1,0 +1,75 @@
+User-agent: *
+Allow: /
+Disallow: /busca?
+
+# Sitemaps
+Sitemap: https://noticiajuridicas.com.br/sitemap-index.xml
+Sitemap: https://noticiajuridicas.com.br/sitemap-news.xml
+
+# ── Googlebot ─────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# ── Redes sociais ──────────────────────────────────
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# ── Motores de busca ───────────────────────────────
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# ── Agentes de IA — acesso permitido para citação ──
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# Common Crawl — base de dados de muitos LLMs de código aberto
+User-agent: CCBot
+Allow: /

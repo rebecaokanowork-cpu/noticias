@@ -4,25 +4,27 @@ import noticias from '../data/noticias.json';
 
 const todas = [...noticias].sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
 
-const hero      = todas.slice(0, 5);
-const ultimas   = todas.slice(5, 17);
-const destaque3 = todas.slice(17, 20);
-const mais      = todas.slice(20, 44);
+const principal   = todas[0];
+const secundarias = todas.slice(1, 4);
+const recentes    = todas.slice(4, 20);
 
-const categorias = ['Constitucional', 'Trabalhista', 'Tributário', 'Civil', 'Penal', 'Previdenciário'];
+const categorias = [
+  { nome: 'Constitucional', hex: '#7c3aed' },
+  { nome: 'Trabalhista',    hex: '#ea580c' },
+  { nome: 'Tributário',     hex: '#059669' },
+  { nome: 'Civil',          hex: '#2563eb' },
+  { nome: 'Penal',          hex: '#dc2626' },
+  { nome: 'Previdenciário', hex: '#0d9488' },
+];
 
-function noticias_cat(cat: string) {
-  return todas.filter(n => n.categoria === cat).slice(0, 6);
-}
-
-const coresCat: Record<string, { hex: string }> = {
-  Constitucional: { hex: '#9333ea' },
-  Trabalhista:    { hex: '#f97316' },
-  Tributário:     { hex: '#059669' },
-  Civil:          { hex: '#2563eb' },
-  Penal:          { hex: '#dc2626' },
-  Previdenciário: { hex: '#0d9488' },
-  Geral:          { hex: '#6b7280' },
+const coresCat: Record<string, string> = {
+  Constitucional: '#7c3aed',
+  Trabalhista:    '#ea580c',
+  Tributário:     '#059669',
+  Civil:          '#2563eb',
+  Penal:          '#dc2626',
+  Previdenciário: '#0d9488',
+  Geral:          '#64748b',
 };
 
 function catSlug(cat: string) {
@@ -33,276 +35,152 @@ function tempo(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const h = Math.floor(diff / 3.6e6);
   const d = Math.floor(h / 24);
-  if (h < 1) return 'agora';
+  if (h < 1)  return 'agora';
   if (h < 24) return `há ${h}h`;
   if (d === 1) return 'ontem';
   return `há ${d} dias`;
 }
 
+function noticias_cat(cat: string, limit = 4) {
+  return todas.filter(n => n.categoria === cat).slice(0, limit);
+}
+
 const vazio = todas.length === 0;
-const heroJson = JSON.stringify(hero.map(n => ({ id: n.id, titulo: n.titulo, categoria: n.categoria, fonte: n.fonte, data: n.data, imagem: n.imagem ?? null })));
 ---
 
 <Layout
   title="Notícia Jurídica"
-  description={`Notícias jurídicas do Brasil atualizadas: STJ, STF, TST, legislação e jurisprudência. ${todas.length} notícias publicadas, atualizado diariamente.`}
+  description={`Notícias jurídicas do Brasil atualizadas: STJ, STF, TST, legislação e jurisprudência. ${todas.length} notícias publicadas.`}
 >
 
 {vazio && (
-  <div class="text-center py-24 text-gray-400">
-    <p class="text-lg font-semibold">Aguardando primeiro scraping...</p>
-  </div>
+  <p class="text-center py-24 text-gray-400 text-lg">Aguardando primeiro scraping...</p>
 )}
 
 {!vazio && (
 <div class="space-y-10">
 
   <!-- ═══════════════════════════════════════════
-       HERO CAROUSEL
+       DESTAQUE PRINCIPAL
   ═══════════════════════════════════════════ -->
-  <section class="relative rounded-2xl overflow-hidden shadow-xl" style="height:480px" id="hero-carousel">
-    <!-- Slides -->
-    <div id="hero-track" class="flex h-full transition-transform duration-700 ease-in-out">
-      {hero.map((n, i) => {
-        const c = coresCat[n.categoria] ?? coresCat['Geral'];
-        return (
-          <div class="hero-slide relative shrink-0 w-full h-full" style="width:100%">
-            {n.imagem
-              ? <img src={n.imagem} alt={n.titulo} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
-              : <div class="absolute inset-0 bg-gradient-to-br from-blue-950 to-blue-800"></div>
-            }
-            <!-- Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-            <!-- Conteúdo -->
-            <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <span class="inline-block text-white text-xs font-black uppercase tracking-widest px-3 py-1 rounded mb-3" style={`background-color:${c.hex}`}>
-                {n.categoria}
-              </span>
-              <a href={`/noticias/${n.id}`}>
-                <h2 class="text-white font-black leading-tight text-xl md:text-3xl mb-2 hover:text-amber-300 transition-colors" style="font-family:'Playfair Display',serif;text-shadow:0 2px 8px rgba(0,0,0,.5)">
-                  {n.titulo}
-                </h2>
-              </a>
-              <p class="text-gray-300 text-sm">{n.fonte} · {tempo(n.data)}</p>
-            </div>
-          </div>
-        );
-      })}
+  <section class="grid grid-cols-1 md:grid-cols-3 border border-gray-200 rounded-xl overflow-hidden">
+    <!-- Artigo principal -->
+    <div class="md:col-span-2 relative min-h-72">
+      {principal.imagem
+        ? <img src={principal.imagem} alt={principal.titulo}
+            class="w-full h-72 md:h-full object-cover" loading="eager" />
+        : <div class="w-full h-72 md:h-full bg-blue-950"></div>
+      }
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-5 md:p-8">
+        <span class="inline-block text-white text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded mb-3"
+          style={`background-color:${coresCat[principal.categoria] ?? '#64748b'}`}>
+          {principal.categoria}
+        </span>
+        <a href={`/noticias/${principal.id}`}>
+          <h2 class="text-white font-black text-xl md:text-2xl leading-tight hover:text-red-300 transition-colors mb-2"
+            style="font-family:'Playfair Display',serif;text-shadow:0 1px 6px rgba(0,0,0,.6)">
+            {principal.titulo}
+          </h2>
+        </a>
+        <p class="text-gray-300 text-xs">{principal.fonte} · {tempo(principal.data)}</p>
+      </div>
     </div>
 
-    <!-- Setas -->
-    <button id="hero-prev" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10" aria-label="Anterior">
-      <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-    </button>
-    <button id="hero-next" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10" aria-label="Próximo">
-      <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-    </button>
-
-    <!-- Dots -->
-    <div id="hero-dots" class="absolute bottom-3 right-6 flex gap-2 z-10">
-      {hero.map((_, i) => (
-        <button class:list={['hero-dot w-2 h-2 rounded-full transition-all', i === 0 ? 'bg-red-500 w-5' : 'bg-white/50']} data-idx={i} aria-label={`Slide ${i+1}`}></button>
+    <!-- Sidebar — 3 artigos -->
+    <div class="divide-y divide-gray-100 border-t md:border-t-0 md:border-l border-gray-200">
+      {secundarias.map(n => (
+        <div class="p-4 hover:bg-gray-50 transition-colors">
+          <span class="text-xs font-bold uppercase tracking-wide block mb-1"
+            style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
+            {n.categoria}
+          </span>
+          <a href={`/noticias/${n.id}`}>
+            <h3 class="font-bold text-gray-900 text-sm leading-snug hover:text-red-700 transition-colors line-clamp-3">
+              {n.titulo}
+            </h3>
+          </a>
+          <p class="text-xs text-gray-400 mt-2">{n.fonte} · {tempo(n.data)}</p>
+        </div>
       ))}
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       FAIXA ÚLTIMAS — scroll horizontal
+       ÚLTIMAS NOTÍCIAS — grade compacta
   ═══════════════════════════════════════════ -->
   <section>
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2">
-        <span class="w-1 h-5 bg-red-700 rounded-full"></span>
-        <h2 class="font-black text-gray-900 text-lg" style="font-family:'Playfair Display',serif">Últimas notícias</h2>
-      </div>
+    <div class="flex items-center gap-3 mb-5">
+      <span class="block w-1 h-5 bg-red-600 rounded-full"></span>
+      <h2 class="font-black text-gray-900 text-sm uppercase tracking-widest">Últimas notícias</h2>
+      <div class="flex-1 h-px bg-gray-200"></div>
     </div>
-    <div class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide">
-      {ultimas.map(n => {
-        const c = coresCat[n.categoria] ?? coresCat['Geral'];
-        return (
-          <article class="snap-start shrink-0 w-64 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-            {n.imagem
-              ? <img src={n.imagem} alt={n.titulo} class="w-full h-36 object-cover" loading="lazy" />
-              : <div class="w-full h-36 flex items-center justify-center" style={`background-color:${c.hex}`}>
-                  <svg class="w-12 h-12 text-white/30" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                </div>
-            }
-            <div class="p-4 flex flex-col flex-1">
-              <span class="text-xs font-black uppercase tracking-wide mb-2" style={`color:${c.hex}`}>{n.categoria}</span>
-              <a href={`/noticias/${n.id}`}>
-                <h3 class="font-bold text-gray-900 text-sm leading-snug hover:text-blue-700 transition-colors line-clamp-3">{n.titulo}</h3>
-              </a>
-              <p class="text-xs text-gray-400 mt-auto pt-3">{n.fonte} · {tempo(n.data)}</p>
-            </div>
-          </article>
-        );
-      })}
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-6">
+      {recentes.map(n => (
+        <article class="group">
+          {n.imagem && (
+            <img src={n.imagem} alt={n.titulo}
+              class="w-full h-28 object-cover rounded-lg mb-2.5" loading="lazy" />
+          )}
+          <span class="text-xs font-bold uppercase tracking-wide block mb-1"
+            style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
+            {n.categoria}
+          </span>
+          <a href={`/noticias/${n.id}`}>
+            <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-3">
+              {n.titulo}
+            </h3>
+          </a>
+          <p class="text-xs text-gray-400 mt-1.5">{n.fonte} · {tempo(n.data)}</p>
+        </article>
+      ))}
     </div>
   </section>
 
-
   <!-- ═══════════════════════════════════════════
-       3 DESTAQUES em grid
+       SEÇÕES POR CATEGORIA
   ═══════════════════════════════════════════ -->
-  {destaque3.length > 0 && (
-  <section>
-    <div class="flex items-center gap-2 mb-4">
-      <span class="w-1 h-5 bg-blue-700 rounded-full"></span>
-      <h2 class="font-black text-gray-900 text-lg" style="font-family:'Playfair Display',serif">Em destaque</h2>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {destaque3.map(n => {
-        const c = coresCat[n.categoria] ?? coresCat['Geral'];
-        return (
-          <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group">
-            {n.imagem
-              ? <img src={n.imagem} alt={n.titulo} class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-              : <div class="w-full h-44 flex items-center justify-center" style={`background-color:${c.hex}`}>
-                  <svg class="w-14 h-14 text-white/30" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                </div>
-            }
-            <div class="p-4">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs font-black uppercase tracking-wide" style={`color:${c.hex}`}>{n.categoria}</span>
-                <span class="text-xs text-gray-400">· {tempo(n.data)}</span>
-              </div>
-              <a href={`/noticias/${n.id}`}>
-                <h3 class="font-bold text-gray-900 leading-snug hover:text-blue-700 transition-colors text-base line-clamp-3" style="font-family:'Playfair Display',serif">{n.titulo}</h3>
-              </a>
-              <p class="text-xs text-gray-500 mt-3 line-clamp-2">{n.resumo}</p>
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  </section>
-  )}
-
-  <!-- ═══════════════════════════════════════════
-       CARROSSÉIS POR CATEGORIA
-  ═══════════════════════════════════════════ -->
-  {categorias.map((cat, ci) => {
-    const itens = noticias_cat(cat);
-    const c = coresCat[cat] ?? coresCat['Geral'];
-    const sl = catSlug(cat);
-    const trackId = `track-${sl}`;
-    return itens.length >= 2 && (
-      <section>
-        <!-- Cabeçalho da seção -->
-        <div class="flex items-center justify-between mb-4 pb-3 border-b-2" style={`border-bottom-color:${c.hex}`}>
-          <h2 class="font-black text-lg flex items-center gap-2" style={`font-family:'Playfair Display',serif;color:${c.hex}`}>
-            {cat}
-          </h2>
-          <div class="flex items-center gap-3">
-            <a href={`/categoria/${sl}`} class="text-xs font-bold hover:underline" style={`color:${c.hex}`}>Ver tudo →</a>
-            <button class="cat-prev bg-white border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors" data-track={trackId} aria-label="Anterior">
-              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <button class="cat-next bg-white border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors" data-track={trackId} aria-label="Próximo">
-              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-        <!-- Track scrollável -->
-        <div id={trackId} class="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide scroll-smooth">
-          {itens.map(n => (
-            <article class="snap-start shrink-0 w-72 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-              {n.imagem
-                ? <img src={n.imagem} alt={n.titulo} class="w-full h-40 object-cover" loading="lazy" />
-                : <div class="w-full h-40 flex items-center justify-center" style={`background-color:${c.hex}`}>
-                    <svg class="w-12 h-12 text-white/30" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                  </div>
-              }
-              <div class="p-4 flex flex-col flex-1">
-                <a href={`/noticias/${n.id}`}>
-                  <h3 class="font-bold text-gray-900 text-sm leading-snug hover:text-blue-700 transition-colors line-clamp-3 mb-2">{n.titulo}</h3>
-                </a>
-                <p class="text-xs text-gray-500 line-clamp-2 flex-1">{n.resumo}</p>
-                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                  <span class="text-xs text-gray-400">{n.fonte}</span>
-                  <span class="text-xs text-gray-400">{tempo(n.data)}</span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    );
-  })}
-
-
-  <!-- ═══════════════════════════════════════════
-       MAIS NOTÍCIAS — grid compacto
-  ═══════════════════════════════════════════ -->
-  {mais.length > 0 && (
-  <section>
-    <div class="flex items-center gap-2 mb-4">
-      <span class="w-1 h-5 bg-gray-400 rounded-full"></span>
-      <h2 class="font-black text-gray-900 text-lg" style="font-family:'Playfair Display',serif">Mais notícias</h2>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {mais.map(n => {
-        const c = coresCat[n.categoria] ?? coresCat['Geral'];
-        return (
-          <article class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow">
-            <span class="text-xs font-black uppercase tracking-wide mb-2 block" style={`color:${c.hex}`}>{n.categoria}</span>
-            <a href={`/noticias/${n.id}`}>
-              <h3 class="font-bold text-gray-900 text-sm leading-snug hover:text-blue-700 transition-colors line-clamp-3">{n.titulo}</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {categorias.map(cat => {
+      const itens = noticias_cat(cat.nome);
+      if (itens.length < 2) return null;
+      const sl = catSlug(cat.nome);
+      return (
+        <section>
+          <div class="flex items-center justify-between mb-4 pb-2.5 border-b-2"
+            style={`border-color:${cat.hex}`}>
+            <h2 class="font-black text-sm uppercase tracking-widest"
+              style={`color:${cat.hex}`}>
+              {cat.nome}
+            </h2>
+            <a href={`/categoria/${sl}`} class="text-xs text-gray-400 hover:text-gray-700 transition-colors">
+              Ver mais →
             </a>
-            <p class="text-xs text-gray-400 mt-3">{n.fonte} · {tempo(n.data)}</p>
-          </article>
-        );
-      })}
-    </div>
-  </section>
-  )}
+          </div>
+          <div class="space-y-3">
+            {itens.map((n, idx) => (
+              <div class={`flex gap-3 pb-3${idx < itens.length - 1 ? ' border-b border-gray-100' : ''}`}>
+                {n.imagem && (
+                  <img src={n.imagem} alt={n.titulo}
+                    class="w-16 h-16 object-cover rounded flex-shrink-0" loading="lazy" />
+                )}
+                <div class="flex-1 min-w-0">
+                  <a href={`/noticias/${n.id}`}>
+                    <h3 class="font-semibold text-gray-900 text-sm leading-snug hover:text-red-700 transition-colors line-clamp-2">
+                      {n.titulo}
+                    </h3>
+                  </a>
+                  <p class="text-xs text-gray-400 mt-1">{n.fonte} · {tempo(n.data)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
 
 </div>
 )}
 
 </Layout>
-
-<style>
-.scrollbar-hide { scrollbar-width: none; }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-</style>
-
-<script>
-// ── HERO CAROUSEL ──────────────────────────────────────
-const track  = document.getElementById('hero-track') as HTMLElement;
-const dots   = document.querySelectorAll('.hero-dot') as NodeListOf<HTMLButtonElement>;
-const slides = document.querySelectorAll('.hero-slide');
-let cur = 0;
-let timer: ReturnType<typeof setInterval>;
-
-function goTo(idx: number) {
-  cur = (idx + slides.length) % slides.length;
-  track.style.transform = `translateX(-${cur * 100}%)`;
-  dots.forEach((d, i) => {
-    d.classList.toggle('bg-red-500', i === cur);
-    d.classList.toggle('w-5', i === cur);
-    d.classList.toggle('bg-white/50', i !== cur);
-    d.classList.toggle('w-2', i !== cur);
-  });
-}
-
-function startTimer() {
-  timer = setInterval(() => goTo(cur + 1), 6000);
-}
-
-document.getElementById('hero-prev')?.addEventListener('click', () => { clearInterval(timer); goTo(cur - 1); startTimer(); });
-document.getElementById('hero-next')?.addEventListener('click', () => { clearInterval(timer); goTo(cur + 1); startTimer(); });
-dots.forEach(d => d.addEventListener('click', () => { clearInterval(timer); goTo(Number(d.dataset.idx)); startTimer(); }));
-startTimer();
-
-// ── CARROSSÉIS POR CATEGORIA ───────────────────────────
-document.querySelectorAll('.cat-prev, .cat-next').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const trackId = (btn as HTMLElement).dataset.track!;
-    const el = document.getElementById(trackId);
-    if (!el) return;
-    const dir = btn.classList.contains('cat-next') ? 1 : -1;
-    el.scrollBy({ left: dir * 300, behavior: 'smooth' });
-  });
-});
-</script>

@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import AdBanner from '../../components/AdBanner.astro';
 import noticias from '../../data/noticias.json';
 
 export function getStaticPaths() {
@@ -78,11 +77,6 @@ const temConteudo = noticia.conteudo && noticia.conteudo.length > 100;
         </figure>
       )}
 
-      <!-- Ad acima do artigo -->
-      <div class="mb-6">
-        <AdBanner formato="horizontal" slot="1111111111" />
-      </div>
-
       <!-- Corpo do artigo -->
       {temConteudo ? (
         <div
@@ -90,16 +84,11 @@ const temConteudo = noticia.conteudo && noticia.conteudo.length > 100;
           set:html={noticia.conteudo}
         />
       ) : (
-        <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 text-center">
-          <p class="text-gray-700 text-lg leading-relaxed mb-4">{noticia.resumo}</p>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 text-center">
+          <p class="article-summary text-gray-700 text-lg leading-relaxed mb-4">{noticia.resumo}</p>
           <p class="text-sm text-gray-500">O conteúdo completo está disponível na fonte original.</p>
         </div>
       )}
-
-      <!-- Ad abaixo do artigo -->
-      <div class="mt-8">
-        <AdBanner formato="horizontal" slot="2222222222" />
-      </div>
 
       <!-- Atribuição à fonte -->
       <footer class="mt-8 pt-6 border-t border-gray-200">
@@ -137,8 +126,6 @@ const temConteudo = noticia.conteudo && noticia.conteudo.length > 100;
 
     <!-- Sidebar -->
     <aside class="hidden lg:block w-72 flex-shrink-0 space-y-6 sticky top-24">
-      <AdBanner formato="retangulo" slot="3333333333" />
-
       <!-- Mais notícias da mesma categoria -->
       <div class="bg-white rounded-lg shadow-sm p-4">
         <h3 class="font-bold text-gray-900 mb-3 text-sm uppercase tracking-wide">
@@ -170,19 +157,47 @@ const temConteudo = noticia.conteudo && noticia.conteudo.length > 100;
     "@type": "NewsArticle",
     "headline": noticia.titulo,
     "description": noticia.resumo,
-    "image": noticia.imagem ?? undefined,
+    "image": noticia.imagem
+      ? { "@type": "ImageObject", "url": noticia.imagem, "width": 1200, "height": 630 }
+      : undefined,
     "datePublished": noticia.data,
     "dateModified": noticia.data,
+    "inLanguage": "pt-BR",
+    "keywords": `${noticia.categoria}, direito, jurídico, brasil, ${noticia.fonte}`,
     "publisher": {
       "@type": "Organization",
-      "name": "Direito em Pauta",
-      "url": "https://direitoempauta.com.br"
+      "name": "Notícia Jurídica",
+      "url": "https://noticiajuridicas.com.br",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://noticiajuridicas.com.br/favicon.svg",
+        "width": 60,
+        "height": 60
+      }
     },
     "author": {
       "@type": "Organization",
       "name": noticia.fonte
     },
-    "mainEntityOfPage": Astro.url.href,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": Astro.url.href
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Notícia Jurídica",
+      "url": "https://noticiajuridicas.com.br"
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".article-summary"]
+    },
+    "articleSection": noticia.categoria,
+    "url": Astro.url.href,
+    "copyrightHolder": {
+      "@type": "Organization",
+      "name": noticia.fonte
+    }
   })} />
 </Layout>
 
