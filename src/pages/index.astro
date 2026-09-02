@@ -6,7 +6,7 @@ const todas = [...noticias].sort((a, b) => new Date(b.data).getTime() - new Date
 
 const principal   = todas[0];
 const secundarias = todas.slice(1, 4);
-const recentes    = todas.slice(4, 20);
+const recentes    = todas.slice(4, 12);
 
 const categorias = [
   { nome: 'Constitucional', hex: '#7c3aed' },
@@ -35,8 +35,8 @@ function tempo(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const h = Math.floor(diff / 3.6e6);
   const d = Math.floor(h / 24);
-  if (h < 1)  return 'agora';
-  if (h < 24) return `há ${h}h`;
+  if (h < 1)   return 'agora';
+  if (h < 24)  return `há ${h}h`;
   if (d === 1) return 'ontem';
   return `há ${d} dias`;
 }
@@ -60,86 +60,99 @@ const vazio = todas.length === 0;
 {!vazio && (
 <div class="space-y-10">
 
-  <!-- ═══════════════════════════════════════════
-       DESTAQUE PRINCIPAL
-  ═══════════════════════════════════════════ -->
-  <section class="grid grid-cols-1 md:grid-cols-3 border border-gray-200 rounded-xl overflow-hidden">
-    <!-- Artigo principal -->
-    <div class="md:col-span-2 relative min-h-72">
-      {principal.imagem
-        ? <img src={principal.imagem} alt={principal.titulo}
-            class="w-full h-72 md:h-full object-cover" loading="eager" />
-        : <div class="w-full h-72 md:h-full bg-blue-950"></div>
-      }
-      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-      <div class="absolute bottom-0 left-0 right-0 p-5 md:p-8">
-        <span class="inline-block text-white text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded mb-3"
+  <!-- ═══ DESTAQUE ═══════════════════════════════════ -->
+  <section class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+    <!-- Artigo principal — 3 colunas -->
+    <a href={`/noticias/${principal.id}`}
+       class="lg:col-span-3 group block relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-blue-950">
+      <!-- Imagem 16:9 -->
+      <div class="aspect-video w-full overflow-hidden">
+        {principal.imagem
+          ? <img src={principal.imagem} alt={principal.titulo}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="eager" />
+          : <div class="w-full h-full bg-gradient-to-br from-blue-950 to-blue-900"></div>
+        }
+      </div>
+      <!-- Overlay degradê -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <!-- Texto -->
+      <div class="absolute bottom-0 left-0 right-0 p-5">
+        <span class="inline-block text-white text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded mb-2"
           style={`background-color:${coresCat[principal.categoria] ?? '#64748b'}`}>
           {principal.categoria}
         </span>
-        <a href={`/noticias/${principal.id}`}>
-          <h2 class="text-white font-black text-xl md:text-2xl leading-tight hover:text-red-300 transition-colors mb-2"
-            style="font-family:'Playfair Display',serif;text-shadow:0 1px 6px rgba(0,0,0,.6)">
-            {principal.titulo}
-          </h2>
-        </a>
+        <h2 class="text-white font-black text-lg md:text-xl leading-tight mb-1.5 group-hover:text-red-300 transition-colors"
+          style="font-family:'Playfair Display',serif;text-shadow:0 1px 4px rgba(0,0,0,.5)">
+          {principal.titulo}
+        </h2>
         <p class="text-gray-300 text-xs">{principal.fonte} · {tempo(principal.data)}</p>
       </div>
-    </div>
+    </a>
 
-    <!-- Sidebar — 3 artigos -->
-    <div class="divide-y divide-gray-100 border-t md:border-t-0 md:border-l border-gray-200">
+    <!-- Sidebar — 2 colunas, 3 artigos -->
+    <div class="lg:col-span-2 flex flex-col gap-4">
       {secundarias.map(n => (
-        <div class="p-4 hover:bg-gray-50 transition-colors">
-          <span class="text-xs font-bold uppercase tracking-wide block mb-1"
-            style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
-            {n.categoria}
-          </span>
-          <a href={`/noticias/${n.id}`}>
-            <h3 class="font-bold text-gray-900 text-sm leading-snug hover:text-red-700 transition-colors line-clamp-3">
+        <a href={`/noticias/${n.id}`}
+           class="group flex gap-3 bg-white rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex-1">
+          {n.imagem && (
+            <div class="w-24 shrink-0 rounded-lg overflow-hidden">
+              <img src={n.imagem} alt={n.titulo}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+            </div>
+          )}
+          <div class="flex flex-col justify-center min-w-0">
+            <span class="text-xs font-bold uppercase tracking-wide block mb-1"
+              style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
+              {n.categoria}
+            </span>
+            <h3 class="font-bold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-3">
               {n.titulo}
             </h3>
-          </a>
-          <p class="text-xs text-gray-400 mt-2">{n.fonte} · {tempo(n.data)}</p>
-        </div>
+            <p class="text-xs text-gray-400 mt-1.5">{n.fonte} · {tempo(n.data)}</p>
+          </div>
+        </a>
       ))}
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       ÚLTIMAS NOTÍCIAS — grade compacta
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ ÚLTIMAS ════════════════════════════════════ -->
   <section>
     <div class="flex items-center gap-3 mb-5">
       <span class="block w-1 h-5 bg-red-600 rounded-full"></span>
       <h2 class="font-black text-gray-900 text-sm uppercase tracking-widest">Últimas notícias</h2>
       <div class="flex-1 h-px bg-gray-200"></div>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       {recentes.map(n => (
-        <article class="group">
-          {n.imagem && (
-            <img src={n.imagem} alt={n.titulo}
-              class="w-full h-28 object-cover rounded-lg mb-2.5" loading="lazy" />
-          )}
-          <span class="text-xs font-bold uppercase tracking-wide block mb-1"
-            style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
-            {n.categoria}
-          </span>
-          <a href={`/noticias/${n.id}`}>
-            <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-3">
+        <a href={`/noticias/${n.id}`} class="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+          <div class="aspect-video w-full overflow-hidden bg-gray-100">
+            {n.imagem
+              ? <img src={n.imagem} alt={n.titulo}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+              : <div class="w-full h-full flex items-center justify-center"
+                  style={`background-color:${coresCat[n.categoria] ?? '#64748b'}20`}>
+                  <span class="text-xs font-bold uppercase tracking-wide"
+                    style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>{n.categoria}</span>
+                </div>
+            }
+          </div>
+          <div class="p-3">
+            <span class="text-xs font-bold uppercase tracking-wide block mb-1"
+              style={`color:${coresCat[n.categoria] ?? '#64748b'}`}>
+              {n.categoria}
+            </span>
+            <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-2">
               {n.titulo}
             </h3>
-          </a>
-          <p class="text-xs text-gray-400 mt-1.5">{n.fonte} · {tempo(n.data)}</p>
-        </article>
+            <p class="text-xs text-gray-400 mt-2">{n.fonte} · {tempo(n.data)}</p>
+          </div>
+        </a>
       ))}
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       SEÇÕES POR CATEGORIA
-  ═══════════════════════════════════════════ -->
+  <!-- ═══ CATEGORIAS ══════════════════════════════════ -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     {categorias.map(cat => {
       const itens = noticias_cat(cat.nome);
@@ -147,32 +160,31 @@ const vazio = todas.length === 0;
       const sl = catSlug(cat.nome);
       return (
         <section>
-          <div class="flex items-center justify-between mb-4 pb-2.5 border-b-2"
+          <div class="flex items-center justify-between mb-4 pb-2 border-b-2"
             style={`border-color:${cat.hex}`}>
             <h2 class="font-black text-sm uppercase tracking-widest"
-              style={`color:${cat.hex}`}>
-              {cat.nome}
-            </h2>
+              style={`color:${cat.hex}`}>{cat.nome}</h2>
             <a href={`/categoria/${sl}`} class="text-xs text-gray-400 hover:text-gray-700 transition-colors">
               Ver mais →
             </a>
           </div>
           <div class="space-y-3">
             {itens.map((n, idx) => (
-              <div class={`flex gap-3 pb-3${idx < itens.length - 1 ? ' border-b border-gray-100' : ''}`}>
+              <a href={`/noticias/${n.id}`}
+                class={`flex gap-3 group pb-3${idx < itens.length - 1 ? ' border-b border-gray-100' : ''}`}>
                 {n.imagem && (
-                  <img src={n.imagem} alt={n.titulo}
-                    class="w-16 h-16 object-cover rounded flex-shrink-0" loading="lazy" />
+                  <div class="w-16 h-16 shrink-0 rounded overflow-hidden">
+                    <img src={n.imagem} alt={n.titulo}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
                 )}
                 <div class="flex-1 min-w-0">
-                  <a href={`/noticias/${n.id}`}>
-                    <h3 class="font-semibold text-gray-900 text-sm leading-snug hover:text-red-700 transition-colors line-clamp-2">
-                      {n.titulo}
-                    </h3>
-                  </a>
+                  <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-2">
+                    {n.titulo}
+                  </h3>
                   <p class="text-xs text-gray-400 mt-1">{n.fonte} · {tempo(n.data)}</p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>

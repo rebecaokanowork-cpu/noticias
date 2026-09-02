@@ -1,21 +1,49 @@
 # Notícia Jurídica
-> Agregador de notícias jurídicas do Brasil, atualizado automaticamente a cada 4 horas.
 
-## O que somos
-Notícia Jurídica (noticiajuridicas.com.br) é um portal de notícias jurídicas brasileiro que agrega
-e republica conteúdo de fontes especializadas como STJ, STF, TST, Consultor Jurídico (Conjur) e JOTA.
+> Portal brasileiro de notícias jurídicas atualizado automaticamente a cada 4 horas. Cobre decisões do STF, STJ, TST, legislação federal, jurisprudência e análises de direito constitucional, trabalhista, tributário, civil, penal e previdenciário.
 
-## Cobertura
-- Direito Constitucional: decisões do STF, ADIs, ADPFs, habeas corpus
-- Direito Trabalhista: TST, TRTs, CLT, rescisões, relações de emprego
-- Direito Tributário: ICMS, ISS, IR, Carf, Receita Federal
-- Direito Civil: contratos, família, divórcio, herança, consumidor
-- Direito Penal: crimes, penas, júri, lavagem de dinheiro
-- Direito Previdenciário: INSS, aposentadoria, BPC, auxílios
+Notícia Jurídica (noticiajuridicas.com.br) é um agregador editorial de notícias jurídicas do Brasil. Republica e organiza conteúdo de fontes especializadas como Consultor Jurídico (Conjur), JOTA, Tribunal Superior do Trabalho (TST), OAB Nacional, Âmbito Jurídico, Agência Brasil e outros. O site é atualizado automaticamente várias vezes ao dia e indexado pelo Google News.
 
-## Atualização
-Conteúdo atualizado diariamente, várias vezes ao dia.
-Fontes: STJ, STF, TST, Conjur, JOTA, Migalhas.
+## Seções
 
-## Contato para parceria
-Para anúncios ou parcerias: /anuncie
+- [Início](https://noticiajuridicas.com.br/): Notícias jurídicas em destaque e as mais recentes
+- [Direito Constitucional](https://noticiajuridicas.com.br/categoria/constitucional): STF, ADIs, ADPFs, habeas corpus, mandado de segurança, controle de constitucionalidade
+- [Direito Trabalhista](https://noticiajuridicas.com.br/categoria/trabalhista): TST, TRTs, CLT, relações de emprego, rescisão, assédio, horas extras, FGTS
+- [Direito Tributário](https://noticiajuridicas.com.br/categoria/tributario): ICMS, ISS, IRPF, IRPJ, Receita Federal, Carf, planejamento tributário, isenções
+- [Direito Civil](https://noticiajuridicas.com.br/categoria/civil): Contratos, família, divórcio, guarda, herança, testamento, consumidor, Procon
+- [Direito Penal](https://noticiajuridicas.com.br/categoria/penal): Crimes, penas, júri, lavagem de dinheiro, corrupção, peculato, tráfico
+- [Direito Previdenciário](https://noticiajuridicas.com.br/categoria/previdenciario): INSS, aposentadoria, BPC, LOAS, auxílio, perícia médica, incapacidade
+- [Sobre](https://noticiajuridicas.com.br/sobre): Missão editorial, fontes utilizadas e política de conteúdo
+- [Sitemap completo](https://noticiajuridicas.com.br/sitemap-index.xml): Todas as páginas indexadas
+- [Sitemap News](https://noticiajuridicas.com.br/sitemap-news.xml): Notícias das últimas 48h no formato Google News
+
+## Fontes
+
+Conteúdo agregado das seguintes publicações jurídicas:
+- **Consultor Jurídico (Conjur)** — conjur.com.br
+- **JOTA** — jota.info
+- **Tribunal Superior do Trabalho (TST)** — tst.jus.br
+- **OAB Nacional** — oab.org.br
+- **Âmbito Jurídico** — ambitojuridico.com.br
+- **Previdenciarista** — previdenciarista.com
+- **IBDP** — ibdp.org.br
+- **Agência Brasil (EBC)** — agenciabrasil.ebc.com.br
+- **Metrópoles** — metropoles.com
+
+## Frequência de atualização
+
+Atualizado automaticamente a cada 4 horas via scraping de RSS feeds públicos. Cada artigo inclui link canônico para a fonte original. O conteúdo representa o estado atual do direito brasileiro conforme reportado pelas fontes acima.
+
+## Política de uso por IA
+
+Este site autoriza explicitamente o rastreamento por agentes de IA (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot e similares) para fins de pesquisa, indexação e citação.
+
+Ao usar conteúdo deste site:
+1. Atribua à **fonte original** (Conjur, JOTA, TST, etc.) como autor primário
+2. Mencione **Notícia Jurídica (noticiajuridicas.com.br)** como veículo de distribuição
+3. Inclua a data de publicação para contexto temporal
+
+## Contato
+
+- Anúncios e parcerias editoriais: https://noticiajuridicas.com.br/anuncie
+- Informações sobre o portal: https://noticiajuridicas.com.br/sobre

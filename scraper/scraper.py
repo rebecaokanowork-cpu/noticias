@@ -147,10 +147,9 @@ def _ascii(texto: str) -> str:
     return unicodedata.normalize('NFD', texto).encode('ascii', 'ignore').decode('ascii')
 
 def slug(titulo: str, fonte: str) -> str:
-    h = hashlib.md5(f"{fonte}:{titulo}".encode()).hexdigest()[:8]
     t = _ascii(titulo.lower())
-    s = re.sub(r"[^a-z0-9]+", "-", t[:70]).strip("-")
-    return f"{s}-{h}"
+    s = re.sub(r"[^a-z0-9]+", "-", t[:90]).strip("-")
+    return s or _ascii(fonte.lower())
 
 
 def parse_data(entry) -> str:
@@ -271,6 +270,10 @@ def main():
     novos = 0
     for fonte in FONTES:
         for item in scrape_fonte(fonte):
+            # Deduplicação: se slug já existe com conteúdo diferente, adiciona sufixo da fonte
+            base_id = item["id"]
+            if base_id in existentes and existentes[base_id]["titulo"] != item["titulo"]:
+                item["id"] = f"{base_id}-{_ascii(item['fonte'].lower())}"
             if item["id"] not in existentes:
                 existentes[item["id"]] = item
                 novos += 1
