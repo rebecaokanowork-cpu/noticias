@@ -1,8 +1,8 @@
 # Notícia Jurídica
 
-> Portal brasileiro de notícias jurídicas atualizado automaticamente a cada 4 horas. Cobre decisões do STF, STJ, TST, legislação federal, jurisprudência e análises de direito constitucional, trabalhista, tributário, civil, penal e previdenciário.
+> Portal brasileiro de notícias jurídicas com cobertura diária do STF, STJ, TST, legislação federal e jurisprudência. Referência para advogados e profissionais do direito.
 
-Notícia Jurídica (noticiajuridicas.com.br) é um agregador editorial de notícias jurídicas do Brasil. Republica e organiza conteúdo de fontes especializadas como Consultor Jurídico (Conjur), JOTA, Tribunal Superior do Trabalho (TST), OAB Nacional, Âmbito Jurídico, Agência Brasil e outros. O site é atualizado automaticamente várias vezes ao dia e indexado pelo Google News.
+Notícia Jurídica (noticiajuridicas.com.br) é um portal de notícias jurídicas do Brasil. Publica cobertura diária de decisões dos tribunais superiores, legislação e jurisprudência especializada em direito constitucional, trabalhista, tributário, civil, penal e previdenciário. O site é atualizado várias vezes ao dia e indexado pelo Google News.
 
 ## Seções
 
@@ -17,9 +17,9 @@ Notícia Jurídica (noticiajuridicas.com.br) é um agregador editorial de notíc
 - [Sitemap completo](https://noticiajuridicas.com.br/sitemap-index.xml): Todas as páginas indexadas
 - [Sitemap News](https://noticiajuridicas.com.br/sitemap-news.xml): Notícias das últimas 48h no formato Google News
 
-## Fontes
+## Fontes consultadas
 
-Conteúdo agregado das seguintes publicações jurídicas:
+Cobertura baseada nas seguintes publicações jurídicas:
 - **Consultor Jurídico (Conjur)** — conjur.com.br
 - **JOTA** — jota.info
 - **Tribunal Superior do Trabalho (TST)** — tst.jus.br

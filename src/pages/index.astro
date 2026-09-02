@@ -86,7 +86,7 @@ const vazio = todas.length === 0;
           style="font-family:'Playfair Display',serif;text-shadow:0 1px 4px rgba(0,0,0,.5)">
           {principal.titulo}
         </h2>
-        <p class="text-gray-300 text-xs">{principal.fonte} · {tempo(principal.data)}</p>
+        <p class="text-gray-300 text-xs">{tempo(principal.data)}</p>
       </div>
     </a>
 
@@ -109,7 +109,7 @@ const vazio = todas.length === 0;
             <h3 class="font-bold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-3">
               {n.titulo}
             </h3>
-            <p class="text-xs text-gray-400 mt-1.5">{n.fonte} · {tempo(n.data)}</p>
+            <p class="text-xs text-gray-400 mt-1.5">{tempo(n.data)}</p>
           </div>
         </a>
       ))}
@@ -145,7 +145,7 @@ const vazio = todas.length === 0;
             <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-2">
               {n.titulo}
             </h3>
-            <p class="text-xs text-gray-400 mt-2">{n.fonte} · {tempo(n.data)}</p>
+            <p class="text-xs text-gray-400 mt-2">{tempo(n.data)}</p>
           </div>
         </a>
       ))}
@@ -182,7 +182,7 @@ const vazio = todas.length === 0;
                   <h3 class="font-semibold text-gray-900 text-sm leading-snug group-hover:text-red-700 transition-colors line-clamp-2">
                     {n.titulo}
                   </h3>
-                  <p class="text-xs text-gray-400 mt-1">{n.fonte} · {tempo(n.data)}</p>
+                  <p class="text-xs text-gray-400 mt-1">{tempo(n.data)}</p>
                 </div>
               </a>
             ))}
