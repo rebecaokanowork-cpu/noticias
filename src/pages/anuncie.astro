@@ -2,117 +2,137 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout
-  title="Anuncie no Notícia Jurídica — Fale com Advogados e Operadores do Direito"
-  description="Anuncie no maior portal de notícias jurídicas do Brasil. Alcance advogados, juízes, promotores e estudantes de direito. Formatos de banner, native e sponsored post."
+  title="Anuncie no Notícia Jurídica — Alcance Advogados e Operadores do Direito"
+  description="Anuncie no portal de notícias jurídicas mais atualizado do Brasil. Alcance advogados, juízes, promotores e gestores jurídicos. Formatos de banner, native e sponsored post."
   breadcrumbs={[{ nome: 'Anuncie', url: '/anuncie' }]}
 >
-  <!-- Hero -->
-  <div class="text-center py-12 bg-gradient-to-br from-blue-950 to-blue-900 rounded-2xl text-white mb-12 px-6">
-    <h1 class="text-3xl md:text-4xl font-extrabold mb-4">
-      Fale com quem decide.<br/>
-      <span class="text-amber-400">Anuncie no Notícia Jurídica.</span>
-    </h1>
-    <p class="text-blue-200 text-lg max-w-2xl mx-auto mb-6">
-      Nosso leitor é advogado, juiz, promotor, estudante de direito ou gestor jurídico.
-      Perfil de alta renda, alta instrução e alto poder de decisão de compra.
-    </p>
-    <a
-      href="https://wa.me/5518997985211?text=Olá!%20Quero%20anunciar%20no%20Notícia%20Jurídica"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-block bg-amber-400 text-blue-950 font-black px-8 py-3 rounded-lg text-lg hover:bg-amber-300 transition-colors"
-    >
-      Solicitar proposta pelo WhatsApp →
-    </a>
-  </div>
 
-  <!-- Números -->
-  <section class="mb-12">
-    <h2 class="text-xl font-bold text-blue-950 mb-6 text-center">Nossos números</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <!-- ═══ HERO ═══════════════════════════════════════════ -->
+  <section class="relative bg-blue-950 rounded-2xl overflow-hidden mb-16 px-8 md:px-16 py-16 md:py-20">
+    <!-- Fundo decorativo -->
+    <div class="absolute inset-0 opacity-5" style="background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,#fff 40px,#fff 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,#fff 40px,#fff 41px)"></div>
+    <div class="relative max-w-3xl">
+      <span class="inline-block text-red-400 text-xs font-black uppercase tracking-[.2em] mb-5">Para anunciantes</span>
+      <h1 class="text-white font-black text-4xl md:text-5xl leading-tight mb-6" style="font-family:'Playfair Display',serif">
+        Fale com quem<br/>decide no direito.
+      </h1>
+      <p class="text-blue-200 text-lg leading-relaxed mb-8 max-w-xl">
+        O Notícia Jurídica é o portal de notícias jurídicas mais atualizado do Brasil — com cobertura de STF, STJ, TST e legislação federal, atualizado 6 vezes ao dia.
+        Nosso leitor é advogado, juiz, promotor ou gestor jurídico. Perfil de alta renda e alto poder de decisão.
+      </p>
+      <a
+        href="https://wa.me/5518997985211?text=Olá!%20Quero%20anunciar%20no%20Notícia%20Jurídica"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block bg-red-700 hover:bg-red-600 text-white font-bold px-8 py-3.5 rounded-lg transition-colors text-base"
+      >
+        Solicitar proposta →
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ NÚMEROS ══════════════════════════════════════════ -->
+  <section class="mb-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200 rounded-xl overflow-hidden">
       {[
-        { num: '10.000+', label: 'Visitas/mês', icon: '👥' },
-        { num: '35+',     label: 'Notícias novas por dia', icon: '📰' },
-        { num: '4h',      label: 'Frequência de atualização', icon: '⏱️' },
-        { num: '6',       label: 'Áreas do direito cobertas', icon: '⚖️' },
-      ].map(({ num, label, icon }) => (
-        <div class="bg-white rounded-xl shadow-sm p-5 text-center">
-          <div class="text-3xl mb-2">{icon}</div>
-          <div class="text-2xl font-extrabold text-blue-950">{num}</div>
-          <div class="text-sm text-gray-500">{label}</div>
+        { num: '10.000+', label: 'Visitas por mês' },
+        { num: '35+',     label: 'Notícias por dia' },
+        { num: '747',     label: 'Páginas indexadas' },
+        { num: '6',       label: 'Áreas do direito' },
+      ].map(({ num, label }) => (
+        <div class="bg-white px-6 py-8 text-center">
+          <div class="text-3xl md:text-4xl font-black text-blue-950 mb-1">{num}</div>
+          <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">{label}</div>
         </div>
       ))}
     </div>
-    <p class="text-center text-xs text-gray-400 mt-3">* Números em crescimento. Site novo, crescimento acelerado.</p>
+    <p class="text-center text-xs text-gray-400 mt-3">Site com 3 meses de operação. Crescimento acelerado e indexação ativa no Google News.</p>
   </section>
 
-  <!-- Perfil do leitor -->
-  <section class="mb-12 bg-blue-50 rounded-xl p-8">
-    <h2 class="text-xl font-bold text-blue-950 mb-6">Perfil do leitor</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ul class="space-y-3 text-gray-700">
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Advogados e estagiários de direito</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Juízes, promotores e delegados</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Estudantes de direito (OAB e pós-graduação)</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Gestores e departamentos jurídicos de empresas</li>
-      </ul>
-      <ul class="space-y-3 text-gray-700">
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Renda média acima de R$ 5.000</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Alto poder de decisão de compra</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Busca ativa por serviços e ferramentas jurídicas</li>
-        <li class="flex gap-2"><span class="text-amber-500 font-bold">✓</span> Acesso majoritariamente via mobile e desktop</li>
-      </ul>
+  <!-- ═══ PERFIL DO LEITOR ══════════════════════════════════ -->
+  <section class="mb-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div>
+      <span class="block text-red-700 text-xs font-black uppercase tracking-[.15em] mb-3">Audiência</span>
+      <h2 class="text-2xl md:text-3xl font-black text-blue-950 leading-tight mb-6" style="font-family:'Playfair Display',serif">
+        Um leitor que decide,<br/>compra e recomenda.
+      </h2>
+      <p class="text-gray-600 leading-relaxed">
+        A audiência do Notícia Jurídica é formada por profissionais do direito — o segmento com maior concentração de renda e poder de decisão de compra do país.
+      </p>
+    </div>
+    <div class="space-y-3">
+      {[
+        'Advogados e estagiários de direito',
+        'Juízes, promotores e delegados',
+        'Estudantes de direito e pós-graduação',
+        'Gestores e departamentos jurídicos',
+        'Renda média acima de R$ 5.000',
+        'Alta intenção de compra em serviços e ferramentas jurídicas',
+      ].map(item => (
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 w-4 h-4 rounded-full bg-red-700 shrink-0 flex items-center justify-center">
+            <svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="text-gray-700 text-sm">{item}</span>
+        </div>
+      ))}
     </div>
   </section>
 
-  <!-- Formatos de anúncio -->
-  <section class="mb-12">
-    <h2 class="text-xl font-bold text-blue-950 mb-6">Formatos disponíveis</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <!-- ═══ FORMATOS ══════════════════════════════════════════ -->
+  <section class="mb-16">
+    <div class="mb-8">
+      <span class="block text-red-700 text-xs font-black uppercase tracking-[.15em] mb-3">Formatos</span>
+      <h2 class="text-2xl font-black text-blue-950" style="font-family:'Playfair Display',serif">Escolha como aparecer.</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {[
         {
           nome: 'Banner Header',
-          desc: 'Aparece logo abaixo do ticker de notícias. Alta visibilidade, todas as páginas.',
-          dim: '728×90 ou responsivo',
-          ideal: 'Cursos OAB, legaltech, editoras',
+          desc: 'Exibido logo abaixo do ticker de notícias. Visibilidade máxima em todas as páginas do portal.',
+          ideal: 'Cursos OAB, legaltech, editoras jurídicas',
           preco: 'A partir de R$ 600/mês',
           destaque: false,
         },
         {
           nome: 'Sponsored Post',
-          desc: 'Artigo patrocinado integrado ao feed de notícias. Parece editorial, tem 3× mais cliques.',
-          dim: 'Texto + imagem (redigimos para você)',
-          ideal: 'Escritórios, serviços B2B',
+          desc: 'Artigo patrocinado integrado ao feed editorial. Formato nativo, alta taxa de leitura e engajamento.',
+          ideal: 'Escritórios, serviços B2B, consultorias',
           preco: 'A partir de R$ 350/post',
           destaque: true,
         },
         {
           nome: 'Sidebar Sticky',
-          desc: 'Banner lateral que acompanha o usuário enquanto lê o artigo.',
-          dim: '300×250 ou 300×600',
-          ideal: 'Seguradoras, bancos, consultorias',
+          desc: 'Banner lateral fixo que acompanha o leitor durante a leitura completa do artigo.',
+          ideal: 'Seguradoras, bancos, fintechs jurídicas',
           preco: 'A partir de R$ 400/mês',
           destaque: false,
         },
       ].map(f => (
-        <div class:list={['rounded-xl p-6 border-2', f.destaque ? 'border-amber-400 bg-amber-50' : 'border-gray-200 bg-white shadow-sm']}>
-          {f.destaque && <span class="text-xs bg-amber-400 text-blue-950 font-black px-2 py-0.5 rounded uppercase tracking-wide mb-3 inline-block">Mais popular</span>}
-          <h3 class="font-bold text-blue-950 text-lg mb-2">{f.nome}</h3>
-          <p class="text-sm text-gray-600 mb-3">{f.desc}</p>
-          <dl class="text-sm space-y-1 mb-4">
-            <div><dt class="text-gray-400 inline">Dimensões: </dt><dd class="inline text-gray-700">{f.dim}</dd></div>
-            <div><dt class="text-gray-400 inline">Ideal para: </dt><dd class="inline text-gray-700">{f.ideal}</dd></div>
-          </dl>
-          <div class="text-blue-950 font-extrabold text-lg">{f.preco}</div>
+        <div class:list={[
+          'rounded-xl p-7 border flex flex-col',
+          f.destaque ? 'border-red-700 bg-blue-950 text-white' : 'border-gray-200 bg-white'
+        ]}>
+          {f.destaque && (
+            <span class="text-xs bg-red-700 text-white font-black px-2.5 py-1 rounded uppercase tracking-widest mb-4 self-start">
+              Mais popular
+            </span>
+          )}
+          <h3 class:list={['font-black text-lg mb-3', f.destaque ? 'text-white' : 'text-blue-950']}>{f.nome}</h3>
+          <p class:list={['text-sm leading-relaxed mb-4 flex-1', f.destaque ? 'text-blue-200' : 'text-gray-500']}>{f.desc}</p>
+          <div class:list={['text-xs mb-4', f.destaque ? 'text-blue-300' : 'text-gray-400']}>
+            <span class="font-semibold">Ideal para:</span> {f.ideal}
+          </div>
+          <div class:list={['font-black text-xl border-t pt-4', f.destaque ? 'text-red-400 border-blue-800' : 'text-blue-950 border-gray-100']}>{f.preco}</div>
         </div>
       ))}
     </div>
   </section>
 
-  <!-- Quem deve anunciar -->
-  <section class="mb-12 bg-white rounded-xl shadow-sm p-8">
-    <h2 class="text-xl font-bold text-blue-950 mb-4">Ideal para anunciar aqui</h2>
-    <div class="flex flex-wrap gap-3">
+  <!-- ═══ SEGMENTOS ════════════════════════════════════════ -->
+  <section class="mb-16">
+    <h2 class="text-sm font-black text-gray-400 uppercase tracking-[.15em] mb-5">Segmentos que anunciam aqui</h2>
+    <div class="flex flex-wrap gap-2">
       {[
         'Cursos preparatórios OAB',
         'Pós-graduação em Direito',
@@ -125,31 +145,35 @@ import Layout from '../layouts/Layout.astro';
         'Bancos e fintechs',
         'Eventos jurídicos',
       ].map(item => (
-        <span class="bg-blue-100 text-blue-900 text-sm px-3 py-1.5 rounded-full font-medium">{item}</span>
+        <span class="border border-gray-200 text-gray-600 text-sm px-4 py-1.5 rounded-full">{item}</span>
       ))}
     </div>
   </section>
 
-  <!-- CTA final -->
-  <div class="text-center bg-blue-950 text-white rounded-2xl p-10">
-    <h2 class="text-2xl font-extrabold mb-3">Pronto para alcançar operadores do direito?</h2>
-    <p class="text-blue-200 mb-6">Entre em contato e receba um kit de mídia com todos os formatos, preços e métricas.</p>
-    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+  <!-- ═══ CTA FINAL ═════════════════════════════════════════ -->
+  <section class="bg-blue-950 rounded-2xl px-8 md:px-16 py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+    <div>
+      <h2 class="text-white font-black text-2xl md:text-3xl leading-tight mb-3" style="font-family:'Playfair Display',serif">
+        Pronto para alcançar<br/>operadores do direito?
+      </h2>
+      <p class="text-blue-300 text-sm">Receba um kit de mídia com formatos, preços e métricas. Respondemos em até 24h.</p>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
       <a
         href="https://wa.me/5518997985211?text=Quero%20anunciar%20no%20Notícia%20Jurídica"
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-green-500 hover:bg-green-400 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+        class="bg-green-500 hover:bg-green-400 text-white font-bold px-7 py-3 rounded-lg transition-colors text-sm whitespace-nowrap"
       >
-        💬 WhatsApp
+        WhatsApp
       </a>
       <a
         href="mailto:contato@noticiajuridicas.com.br"
-        class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-bold px-6 py-3 rounded-lg transition-colors"
+        class="bg-white hover:bg-gray-100 text-blue-950 font-bold px-7 py-3 rounded-lg transition-colors text-sm whitespace-nowrap"
       >
-        ✉️ E-mail
+        Enviar e-mail
       </a>
     </div>
-    <p class="text-xs text-blue-400 mt-4">Respondemos em até 24 horas.</p>
-  </div>
+  </section>
+
 </Layout>
